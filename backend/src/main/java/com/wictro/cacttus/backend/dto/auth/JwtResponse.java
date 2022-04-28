@@ -1,4 +1,4 @@
-package com.wictro.cacttus.backend.model;
+package com.wictro.cacttus.backend.dto.auth;
 
 import java.io.Serializable;
 

@@ -1,8 +1,8 @@
 package com.wictro.cacttus.backend.controller;
 
 import com.wictro.cacttus.backend.config.JwtTokenUtil;
-import com.wictro.cacttus.backend.model.JwtRequest;
-import com.wictro.cacttus.backend.model.JwtResponse;
+import com.wictro.cacttus.backend.dto.auth.JwtRequest;
+import com.wictro.cacttus.backend.dto.auth.JwtResponse;
 import com.wictro.cacttus.backend.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
