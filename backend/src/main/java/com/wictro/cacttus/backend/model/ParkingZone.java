@@ -1,5 +1,8 @@
 package com.wictro.cacttus.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,10 +11,11 @@ import java.util.List;
 public class ParkingZone {
     @Id
     @Column(name = "id")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @JoinColumn(referencedColumnName = "id", name = "city")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private City city;
 
     @Column(name = "name")
@@ -21,19 +25,36 @@ public class ParkingZone {
     private String locationLatitude;
 
     @Column(name = "location_lng")
-    private String longitudeLatitude;
+    private String locationLongitude;
 
+    @Column(name = "is_operating")
+    private Boolean isOperating;
+
+    @JsonIgnore
     @Column(name = "is_active")
-    private boolean isActive;
+    private Boolean isActive;
 
-    @OneToMany(mappedBy = "parkingZone", fetch = FetchType.LAZY)
+    @JsonProperty("isOperating")
+    public Boolean getOperating() {
+        return isOperating;
+    }
+
+    public void setOperating(Boolean operating) {
+        isOperating = operating;
+    }
+
+    @OneToMany(mappedBy = "parkingZone", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ParkingSlot> parkingSlots;
 
-    public long getId() {
+    public List<ParkingSlot> getParkingSlots() {
+        return parkingSlots;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,19 +82,20 @@ public class ParkingZone {
         this.locationLatitude = locationLatitude;
     }
 
-    public String getLongitudeLatitude() {
-        return longitudeLatitude;
+    public String getLocationLongitude() {
+        return locationLongitude;
     }
 
-    public void setLongitudeLatitude(String longitudeLatitude) {
-        this.longitudeLatitude = longitudeLatitude;
+    public void setLocationLongitude(String longitudeLatitude) {
+        this.locationLongitude = longitudeLatitude;
     }
 
-    public boolean isActive() {
+    @JsonIgnore
+    public Boolean isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         isActive = active;
     }
 }

@@ -1,25 +1,53 @@
 package com.wictro.cacttus.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "parking_slots")
 public class ParkingSlot {
+
+    public ParkingSlot(ParkingZone parkingZone, boolean isHandicap) {
+        this.parkingZone = parkingZone;
+        this.isHandicap = isHandicap;
+    }
+
+    public ParkingSlot(){}
+
     @Id
     @Column(name = "id")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @JsonIgnore
     @JoinColumn(referencedColumnName = "id", name = "parking_zone")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private ParkingZone parkingZone;
 
     @Column(name = "is_handicap")
-    private boolean isHandicap;
+    private Boolean isHandicap;
 
     @Column(name = "is_free")
-    private boolean isFree;
+    private Boolean isFree;
 
+    @JsonIgnore
+    @Column(name = "is_active")
+    private Boolean isActive;
+
+    @JsonIgnore
+    @JsonProperty("isActive")
+    public Boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
+    @JsonIgnore
     @OneToMany(mappedBy = "parkingSlot")
     private List<Reservation> reservations;
 
@@ -27,11 +55,11 @@ public class ParkingSlot {
         return reservations;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -43,19 +71,21 @@ public class ParkingSlot {
         this.parkingZone = parkingZone;
     }
 
-    public boolean isHandicap() {
+    @JsonProperty("isHandicap")
+    public Boolean isHandicap() {
         return isHandicap;
     }
 
-    public void setHandicap(boolean handicap) {
+    public void setHandicap(Boolean handicap) {
         isHandicap = handicap;
     }
 
-    public boolean isFree() {
+    @JsonProperty("isFree")
+    public Boolean isFree() {
         return isFree;
     }
 
-    public void setFree(boolean free) {
+    public void setFree(Boolean free) {
         isFree = free;
     }
 }

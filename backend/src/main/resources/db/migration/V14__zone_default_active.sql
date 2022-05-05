@@ -1,0 +1,1 @@
+ALTER TABLE `parking_zones` MODIFY `is_active` BOOLEAN DEFAULT 1;

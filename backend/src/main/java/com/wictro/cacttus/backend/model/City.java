@@ -1,5 +1,7 @@
 package com.wictro.cacttus.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,7 +15,8 @@ public class City {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "city", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ParkingZone> parkingZones;
 
     public List<ParkingZone> getParkingZones() {
