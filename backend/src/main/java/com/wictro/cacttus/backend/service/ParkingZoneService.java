@@ -59,8 +59,11 @@ public class ParkingZoneService {
         return response;
     }
 
-    public List<ParkingZoneDto> getAllParkingZones() {
-        return parkingZoneRepository.getAllParkingZonesAsDto();
+    public List<ParkingZoneDto> getAllParkingZones(Long cityId) {
+        if(cityId == null)
+            return parkingZoneRepository.getAllParkingZonesAsDto();
+        else
+            return parkingZoneRepository.getAllParkingZonesAsDtoByCity(cityId);
     }
 
     public ParkingZone getParkingZoneWithId(Long id) throws ParkingZoneWithIdDoesNotExistException {

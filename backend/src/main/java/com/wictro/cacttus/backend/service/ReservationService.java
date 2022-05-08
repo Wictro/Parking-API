@@ -2,6 +2,7 @@ package com.wictro.cacttus.backend.service;
 
 import com.wictro.cacttus.backend.dto.reservation.CreateReservationRequestDto;
 import com.wictro.cacttus.backend.dto.reservation.EditReservationRequestDto;
+import com.wictro.cacttus.backend.dto.reservation.InvoiceDto;
 import com.wictro.cacttus.backend.dto.reservation.ReservationDto;
 import com.wictro.cacttus.backend.exception.*;
 import com.wictro.cacttus.backend.model.ParkingSlot;
@@ -169,5 +170,27 @@ public class ReservationService {
             else
                 return reservationRepository.getAll(fromTime, toTime);
         }
+    }
+
+    public InvoiceDto getInvoice(Long id, String username) throws ReservationWithIdDoesNotExistException, UnauthorizedExeption {
+        Optional<Reservation> reservation = reservationRepository.findById(id);
+
+        if(reservation.isEmpty())
+            throw new ReservationWithIdDoesNotExistException(id);
+
+        if(!reservation.get().getUser().getUsername().equals(username))
+            throw new UnauthorizedExeption();
+
+        InvoiceDto response = new InvoiceDto();
+        response.setFromTime(reservation.get().getFromTime());
+        response.setToTime(reservation.get().getToTime());
+        response.setCityId(reservation.get().getParkingSlot().getParkingZone().getCity().getId());
+        response.setParkingZoneId(reservation.get().getParkingSlot().getParkingZone().getId());
+        response.setParkingSlotId(reservation.get().getParkingSlot().getId());
+        response.setPrice(reservation.get().getPrice());
+        response.setTax(0.18);
+        response.setTotalPrice(0.18 * reservation.get().getPrice());
+
+        return response;
     }
 }

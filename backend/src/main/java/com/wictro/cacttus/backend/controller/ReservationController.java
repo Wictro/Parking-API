@@ -106,6 +106,21 @@ public class ReservationController {
         }
     }
 
+    @GetMapping("/{id}/invoice")
+    public GenericJsonResponse<?> getReservationInvoice(@PathVariable Long id, Principal principal, HttpServletResponse response){
+        try{
+            return new GenericJsonResponse<>(true, reservationService.getInvoice(id, principal.getName()));
+        }
+        catch (ReservationWithIdDoesNotExistException e){
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return new GenericJsonResponse<>(false, new ErrorResponse(e.getMessage()));
+        }
+        catch (UnauthorizedExeption e){
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return new GenericJsonResponse<>(false, new ErrorResponse(e.getMessage()));
+        }
+    }
+
 
 
 }

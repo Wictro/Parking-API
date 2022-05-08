@@ -35,8 +35,8 @@ public class ParkingZoneController {
 
     //get all parking zones
     @GetMapping
-    public GenericJsonResponse<?> getAllParkingZones() {
-        return new GenericJsonResponse<>(true, parkingZoneService.getAllParkingZones());
+    public GenericJsonResponse<?> getAllParkingZones(@RequestParam(required = false) Long cityId) {
+        return new GenericJsonResponse<>(true, parkingZoneService.getAllParkingZones(cityId));
     }
 
     //get parking zone with specific id
