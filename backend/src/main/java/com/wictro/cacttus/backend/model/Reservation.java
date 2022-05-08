@@ -1,36 +1,43 @@
 package com.wictro.cacttus.backend.model;
 
-import org.hibernate.annotations.Columns;
-
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservations")
 public class Reservation {
     @Id
     @Column(name = "id")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "time_from")
-    private Timestamp fromTime;
+    private LocalDateTime fromTime;
 
     @Column(name = "time_to")
-    private Timestamp toTime;
+    private LocalDateTime toTime;
 
     @Column(name = "time_created")
-    private Timestamp createdTime;
+    private LocalDateTime createdTime;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     @JoinColumn(referencedColumnName = "id", name = "parking_slot")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private ParkingSlot parkingSlot;
 
     @JoinColumn(referencedColumnName = "id", name = "user_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private User user;
+
+    public void setParkingSlot(ParkingSlot parkingSlot) {
+        this.parkingSlot = parkingSlot;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public User getUser() {
         return user;
@@ -40,43 +47,43 @@ public class Reservation {
         return parkingSlot;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Timestamp getFromTime() {
+    public LocalDateTime getFromTime() {
         return fromTime;
     }
 
-    public void setFromTime(Timestamp fromTime) {
+    public void setFromTime(LocalDateTime fromTime) {
         this.fromTime = fromTime;
     }
 
-    public Timestamp getToTime() {
+    public LocalDateTime getToTime() {
         return toTime;
     }
 
-    public void setToTime(Timestamp toTime) {
+    public void setToTime(LocalDateTime toTime) {
         this.toTime = toTime;
     }
 
-    public Timestamp getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return createdTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
+    public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 }
