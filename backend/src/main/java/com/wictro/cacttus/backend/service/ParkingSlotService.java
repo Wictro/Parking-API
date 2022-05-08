@@ -3,6 +3,7 @@ package com.wictro.cacttus.backend.service;
 import com.wictro.cacttus.backend.dto.parkingSlot.CreateParkingSlotsRequestDto;
 import com.wictro.cacttus.backend.dto.parkingSlot.EditParkingSlotRequestDto;
 import com.wictro.cacttus.backend.dto.parkingSlot.ParkingSlotDto;
+import com.wictro.cacttus.backend.exception.DateTimeException;
 import com.wictro.cacttus.backend.exception.ParkingSlotWithIdDoesNotExistException;
 import com.wictro.cacttus.backend.exception.ParkingZoneWithIdDoesNotExistException;
 import com.wictro.cacttus.backend.model.ParkingSlot;
@@ -11,6 +12,7 @@ import com.wictro.cacttus.backend.repository.ParkingSlotRepository;
 import com.wictro.cacttus.backend.repository.ParkingZoneRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,5 +104,23 @@ public class ParkingSlotService {
             throw new ParkingZoneWithIdDoesNotExistException(zoneId);
 
         return parkingSlotRepository.getAllSlotsAtZone(zoneId);
+    }
+
+    public List<ParkingSlotDto> getFreeSlots(LocalDateTime fromTime, LocalDateTime toTime, Boolean isHandicap, Long zoneId, Long cityId) throws DateTimeException {
+        if(fromTime.isAfter(toTime))
+            throw new DateTimeException();
+
+        if(isHandicap == null)
+            isHandicap = false;
+
+        if(zoneId != null){
+            return parkingSlotRepository.getAllByZoneId(zoneId, isHandicap);
+        }
+        else if(cityId != null){
+            return parkingSlotRepository.getAllByCityId(cityId, isHandicap);
+        }
+        else{
+            return parkingSlotRepository.getAllByHandicap(isHandicap);
+        }
     }
 }
