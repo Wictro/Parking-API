@@ -48,7 +48,7 @@ public class ParkingSlot {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "parkingSlot")
+    @OneToMany(mappedBy = "parkingSlot", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
 
     public List<Reservation> getReservations() {

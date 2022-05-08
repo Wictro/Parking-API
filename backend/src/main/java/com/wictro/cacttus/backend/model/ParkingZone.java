@@ -43,6 +43,7 @@ public class ParkingZone {
         isOperating = operating;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parkingZone", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ParkingSlot> parkingSlots;
 
